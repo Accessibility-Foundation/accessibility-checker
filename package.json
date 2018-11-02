@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "preinstall": "npm install git-dependency --no-shrinkwrap --no-save && npm run git-modules:install",
+    "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install",
     "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa && yarn install --no-lockfile --ignore-scripts",
     "git-modules:install": "npx git-dependency install"
   },
@@ -20,5 +20,8 @@
   },
   "gitDependencies": {
     "siteimprove-alfa": "https://github.com/Siteimprove/alfa.git"
+  },
+  "devDependencies": {
+    "git-dependency": "0.0.3"
   }
 }

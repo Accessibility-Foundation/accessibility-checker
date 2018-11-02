@@ -33,6 +33,7 @@ nvm install
 npm install
 
 # Build alfa and link alfa-packages to node_modules
+# This will give you a moment to grab a coffee...
 npm run alfa:build
 ```
 
