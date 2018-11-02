@@ -6,5 +6,19 @@
   "repository": "git@github.com:Accessibility-Foundation/accessibility-checker.git",
   "author": "Roel Antonisse <roel.antonisse@gmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "scripts": {
+    "preinstall": "npm install git-dependency --no-shrinkwrap --no-save && npm run git-modules:install",
+    "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa && yarn install --no-lockfile --ignore-scripts",
+    "git-modules:install": "npx git-dependency install"
+  },
+  "workspaces": [
+    "git_modules/siteimprove-alfa/packages/*"
+  ],
+  "directories": {
+    "gitDependencies": "./git_modules"
+  },
+  "gitDependencies": {
+    "siteimprove-alfa": "https://github.com/Siteimprove/alfa.git"
+  }
 }
