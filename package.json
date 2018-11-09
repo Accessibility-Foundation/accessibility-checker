@@ -2,13 +2,16 @@
   "name": "accessibility-checker",
   "version": "0.0.0",
   "description": "Accessibility auto wcag validation with @siteimprove/alfa",
-  "main": "index.js",
+  "main": "./bin/validate.js",
   "repository": "git@github.com:Accessibility-Foundation/accessibility-checker.git",
   "author": "Roel Antonisse <roel.antonisse@gmail.com>",
   "license": "MIT",
   "private": true,
+  "bin": {
+    "validate": "./bin/validate.js"
+  },
   "scripts": {
-    "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install",
+    "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install && alfa:build",
     "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa && yarn install --no-lockfile --ignore-scripts",
     "git-modules:install": "npx git-dependency install"
   },
@@ -23,5 +26,8 @@
   },
   "devDependencies": {
     "git-dependency": "0.0.3"
+  },
+  "dependencies": {
+    "commander": "^2.19.0"
   }
 }
