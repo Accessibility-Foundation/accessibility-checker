@@ -11,8 +11,10 @@
     "validate": "./bin/validate.js"
   },
   "scripts": {
-    "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install && alfa:build",
-    "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa && yarn install --no-lockfile --ignore-scripts",
+    "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install && npm run alfa:build",
+    "install": "npm run alfa:link",
+    "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa",
+    "alfa:link": "yarn install --no-lockfile --ignore-scripts",
     "git-modules:install": "npx git-dependency install"
   },
   "workspaces": [
