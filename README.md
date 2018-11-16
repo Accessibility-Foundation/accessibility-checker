@@ -1,6 +1,10 @@
 # accessibility-checker
 Validating website accessibility with @siteimprove/alfa
 
+> :warning: **NOTE**
+>
+> This project is depending on unreleased code; [Site Improve's Alfa project](https://github.com/Siteimprove/alfa)
+
 ## Project setup
 
 This project is a [NodeJS](https://nodejs.org/en/) one maintained with [Yarn dependency manager](https://yarnpkg.com/en/docs/getting-started) and node. Check out installation of NodeJS and yarn first before you continue. Installing NodeJs with [node version manager](https://github.com/creationix/nvm#installation) is prefered, to easily change node version.
