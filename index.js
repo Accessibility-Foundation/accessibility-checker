@@ -37,7 +37,7 @@ if (commander.urlList) {
 options.output = commander.output;
 options.summary = commander.summary;
 options.save = commander.save;
-options.rules = commander.rules && commander.rules.split(',').map(rule => rule.trim().toUpperCase());
+options.rules = commander.rules && commander.rules.split(',').map(rule => rule.trim().toUpperCase()) || [];
 options.excludeRules = commander.excludeRules && commander.excludeRules.split(',').map(rule => rule.trim().toUpperCase()) || [];
 options.failed = commander.failed || false;
 
