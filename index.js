@@ -43,7 +43,7 @@ if (urls.length === 0) {
 }
 
 if (urls.length > 0) {
-  urls.forEach(async (url) => {
-    await validate(url, options);
+  urls.forEach((url) => {
+    validate(url, options);
   });
 }
