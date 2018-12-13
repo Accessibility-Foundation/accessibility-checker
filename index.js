@@ -14,6 +14,7 @@ commander
   .description('Validate an url or list of urls with @Siteimprove/Alfa')
   .option('-o, --output <path>', 'Define a path to save reports to')
   .option('-r, --rules <rulekey1,rulekey2,...rulekeyn>', 'Pass one or more rule keys as a list to validate.')
+  .option('-x, --exclude-rules <...rule>', 'Exclude rules from list.')
   .option('-f, --failed', 'Only include results with outcome failed.')
   .option('--no-summary', 'Do not create a summary.')
   .option('--no-save', 'Do not save a report')
@@ -37,6 +38,7 @@ options.output = commander.output;
 options.summary = commander.summary;
 options.save = commander.save;
 options.rules = commander.rules && commander.rules.split(',').map(rule => rule.trim().toUpperCase());
+options.excludeRules = commander.excludeRules && commander.excludeRules.split(',').map(rule => rule.trim().toUpperCase()) || [];
 options.failed = commander.failed || false;
 
 if (urls.length === 0) {
