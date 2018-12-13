@@ -12,14 +12,14 @@ commander
   .version(pkg.version)
   .usage('<url...>')
   .description('Validate an url or list of urls with @Siteimprove/Alfa')
-  .option('-o, --output <path>', 'Define a path to save reports to')
-  .option('-r, --rules <rulekey1,rulekey2,...rulekeyn>', 'Pass one or more rule keys as a list to validate.')
+  .option('-u, --url-list <file>', 'Use a textfile with urls as input.')
+  .option('-o, --output <path>', 'Define a path to save reports to.')
+  .option('-r, --rules <...rule>', 'Pass one or more rule keys as a list to validate.')
   .option('-x, --exclude-rules <...rule>', 'Exclude rules from list.')
   .option('-s, --split-rules', 'Split rule outcomes in seperate reports.')
   .option('-f, --failed', 'Only include results with outcome failed.')
   .option('--no-summary', 'Do not create a summary.')
-  .option('--no-save', 'Do not save a report')
-  .option('-u, --url-list <file>', 'Use a textfile with urls as input');
+  .option('--no-save', 'Do not save a report.');
 
 commander.parse(process.argv);
 
