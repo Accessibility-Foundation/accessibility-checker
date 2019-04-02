@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { readFileSync } = require('fs');
+const os = require('os');
 const path = require('path');
 
 const commander = require('commander');
@@ -38,7 +39,14 @@ if (commander.urlList) {
   urls = urls.concat(commander.args);
 }
 
-options.output = commander.output;
+options.output = (str => {
+  if (str[0] === '~') {
+    return str.replace('~', os.homedir());
+  }
+
+  return str;
+})(commander.output);
+
 options.summary = commander.summary;
 options.save = commander.save;
 options.rules = commander.rules && commander.rules.split(',').map(rule => rule.trim().toUpperCase()) || [];
