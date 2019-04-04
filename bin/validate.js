@@ -40,7 +40,7 @@ if (commander.urlList) {
 }
 
 options.output = (str => {
-  if (str[0] === '~') {
+  if (str && str.indexOf('~') >= 0) {
     return str.replace('~', os.homedir());
   }
 
