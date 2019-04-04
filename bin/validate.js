@@ -60,7 +60,5 @@ if (urls.length === 0) {
 }
 
 if (urls.length > 0) {
-  urls.forEach((url) => {
-    validate(url, options);
-  });
+  validate(urls, options);
 }
