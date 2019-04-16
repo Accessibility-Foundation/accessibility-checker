@@ -22,6 +22,7 @@ commander
   .option('-x, --exclude-rules <...rule>', 'Exclude rules from list.')
   .option('-s, --split-rules', 'Split rule outcomes in seperate reports.')
   .option('-f, --failed', 'Only include results with outcome failed.')
+  .option('--no-questions-asked', 'Skip questions')
   .option('--no-summary', 'Do not create a summary.')
   .option('--no-save', 'Do not save a report.');
 
@@ -47,6 +48,7 @@ options.output = (str => {
   return str;
 })(commander.output);
 
+options.questionsAsked = commander.questionsAsked;
 options.summary = commander.summary;
 options.save = commander.save;
 options.rules = commander.rules && commander.rules.split(',').map(rule => rule.trim().toUpperCase()) || [];
@@ -55,7 +57,7 @@ options.splitRules = commander.splitRules || false;
 options.failed = commander.failed || false;
 
 if (urls.length === 0) {
-  console.error('Required at least one url');
+  console.error('Required at least one url to run');
   process.exit(-1);
 }
 
