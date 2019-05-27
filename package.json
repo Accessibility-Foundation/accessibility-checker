@@ -1,5 +1,5 @@
 {
-  "name": "ca11y",
+  "name": "@accessibility/accessibility-checker",
   "version": "0.0.0",
   "description": "Check Accessibility by the help of act-rules and @siteimprove/alfa",
   "main": "./bin/check-accessibility.js",
@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "bin": {
-    "ca11y": "./bin/ca11y.js"
+    "a11y-check": "./bin/a11y-check.js"
   },
   "scripts": {
     "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install && npm run alfa:build",
@@ -17,7 +17,7 @@
     "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa",
     "alfa:link": "yarn install --no-lockfile --ignore-scripts",
     "git-modules:install": "npx git-dependency install",
-    "ca11y": "node ./bin/ca11y.js"
+    "a11y-check": "node ./bin/a11y-check.js"
   },
   "workspaces": [
     "git_modules/siteimprove-alfa/packages/*"
