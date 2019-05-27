@@ -25,7 +25,7 @@
     "gitDependencies": "./git_modules"
   },
   "gitDependencies": {
-    "siteimprove-alfa": "https://github.com/Siteimprove/alfa.git"
+    "siteimprove-alfa": "https://github.com/Bartimeus-Accessibility/alfa.git"
   },
   "devDependencies": {
     "git-dependency": "0.0.3"
