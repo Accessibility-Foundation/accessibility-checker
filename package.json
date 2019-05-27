@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "bin": {
-    "validate": "./bin/validate.js"
+    "ca11y": "./bin/check-accessibility.js"
   },
   "scripts": {
     "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install && npm run alfa:build",
@@ -16,7 +16,8 @@
     "alfa:update": "npm run git-modules:install && npm run alfa:build && npm run alfa:link",
     "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa",
     "alfa:link": "yarn install --no-lockfile --ignore-scripts",
-    "git-modules:install": "npx git-dependency install"
+    "git-modules:install": "npx git-dependency install",
+    "ca11y": "node ./bin/check-accessibility.js"
   },
   "workspaces": [
     "git_modules/siteimprove-alfa/packages/*"
