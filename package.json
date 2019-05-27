@@ -1,14 +1,14 @@
 {
-  "name": "accessibility-checker",
+  "name": "ca11y",
   "version": "0.0.0",
-  "description": "Accessibility auto wcag validation with @siteimprove/alfa",
-  "main": "./bin/validate.js",
+  "description": "Check Accessibility by the help of act-rules and @siteimprove/alfa",
+  "main": "./bin/check-accessibility.js",
   "repository": "git@github.com:Accessibility-Foundation/accessibility-checker.git",
   "author": "Roel Antonisse <roel.antonisse@gmail.com>",
   "license": "MIT",
   "private": true,
   "bin": {
-    "ca11y": "./bin/check-accessibility.js"
+    "ca11y": "./bin/ca11y.js"
   },
   "scripts": {
     "preinstall": "npm install git-dependency --no-shrinkwrap && npm run git-modules:install && npm run alfa:build",
@@ -17,7 +17,7 @@
     "alfa:build": "yarn install --cwd ./git_modules/siteimprove-alfa",
     "alfa:link": "yarn install --no-lockfile --ignore-scripts",
     "git-modules:install": "npx git-dependency install",
-    "ca11y": "node ./bin/check-accessibility.js"
+    "ca11y": "node ./bin/ca11y.js"
   },
   "workspaces": [
     "git_modules/siteimprove-alfa/packages/*"
