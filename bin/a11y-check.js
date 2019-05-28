@@ -21,8 +21,10 @@ function hasUrls(command) {
 }
 
 if (hasUrls(command)) {
-  a11yCheck(getUrls(command));
-  console.log('Done!');
+  a11yCheck(getUrls(command))
+    .then(() => {
+      console.log('Done!');
+    });
 }
 
 else {
