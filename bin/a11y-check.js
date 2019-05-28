@@ -1,19 +1,14 @@
 #!/usr/bin/env node
 const command = require('commander');
-const fs = require('fs');
-const path = require('path');
 
+const pkg = require('../lib/util/package.js');
 const a11yCheck = require('../lib/index.js');
 
-const PKG = JSON.parse(fs.readFileSync(
-  path.resolve('package.json'),
-  'utf8'
-));
 
 command
-  .version(`${PKG.name}: version ${PKG.version}`)
+  .version(`${pkg.name()}: version ${pkg.version()}`)
   .usage('<url1 url2 … urlN>')
-  .description(PKG.description);
+  .description(pkg.description());
 
 command.parse(process.argv);
 
