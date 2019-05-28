@@ -22,6 +22,7 @@ function hasUrls(command) {
 
 if (hasUrls(command)) {
   a11yCheck(getUrls(command));
+  console.log('Done!');
 }
 
 else {
