@@ -32,6 +32,7 @@
     "git-dependency": "0.0.3"
   },
   "dependencies": {
-    "commander": "^2.19.0"
+    "commander": "^2.19.0",
+    "prompt-async": "^0.9.9"
   }
 }
