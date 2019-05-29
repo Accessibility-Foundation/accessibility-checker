@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import * as command from 'commander';
+import command from 'commander';
 
 import * as pkg from '../lib/util/package.js';
 import a11yCheck from '../lib/index.js';
