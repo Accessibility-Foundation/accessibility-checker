@@ -1,29 +1,38 @@
 import * as act from '@siteimprove/alfa-act';
-import chalk from 'chalk';
-import * as prompt from 'prompt-async';
+import * as dom from '@siteimprove/alfa-dom';
+import { highlight } from '@siteimprove/alfa-highlight';
+import * as inquirer from 'inquirer';
 
 export async function askQuestions(questions: Array<act.Question<any, any>>, page: act.Aspects): Promise<Array<act.Answer<any, any>>> {
-  prompt.start();
-
-  const answers = await prompt.get({
-    properties: questions.map(q => {
+  const answers = await inquirer.prompt(
+    questions.map(q => {
       return createQuestion(q);
     })
-  });
+  );
 
-  return questions.map((question, index) => {
+  return questions.map(question => {
     let answer: act.Answer<any, any>;
 
     if (question.scope === act.QuestionScope.Global) {
+      const { type, id, aspect, target } = question;
+
       answer = {
-        ...question,
-        rule: undefined,
-        answer: answers[index],
+        type,
+        id,
+        aspect,
+        target,
+        answer: answers[question.id],
       };
     } else {
+      const { type, id, rule, aspect, target } = question;
+
       answer = {
-        ...question,
-        answer: answers[index],
+        type,
+        id,
+        rule,
+        aspect,
+        target,
+        answer: answers[question.id],
       };
     }
 
@@ -31,7 +40,7 @@ export async function askQuestions(questions: Array<act.Question<any, any>>, pag
   });
 }
 
-function createQuestion(question) {
+function createQuestion(question): inquirer.Question {
   const {
     id,
     message,
@@ -39,90 +48,29 @@ function createQuestion(question) {
     type
   } = question;
 
-  if (!question.id) {
-    throw new Error('Question id is required.');
+  switch (type) {
+    case act.QuestionType.Boolean:
+      return {
+        name: id,
+        type: 'confirm',
+        message: getMessage()
+      }
+
+    default:
+      return {
+        name: id,
+        type: 'input',
+        message: getMessage()
+      }
   }
 
-  return {
-    id: id,
-    type: getType(),
-    description: createDescription(),
-    before: modifyUserInput(),
-  };
+  function getMessage() {
+    const description = message || `${id}?`;
 
-  function createDescription() {
-    const rawDescription = chalk.white(message || `${id}?`);
-    const targetTag = target
-      ? chalk.cyan(createTag(target))
+    const markup = target
+      ? highlight('html', dom.serialize(target, target))
       : null;
-    const hint = getHint(type);
 
-    return `
-
-    --Question--
-      ${targetTag}
-      ${rawDescription} ${hint}
-    `;
-  }
-
-  function createTag(node) {
-    if (node.nodeType !== 1) {
-      return `[${node.nodeName}]`
-    }
-
-    const {
-      localName,
-      attributes
-    } = node;
-
-    const props = attributes.reduce((attrStr, a) => {
-      const prop = a.localName;
-      const value = a.value;
-
-      return `${attrStr} ${prop}="${value}"`;
-    }, '');
-
-    return `<${localName} ${props}>`;
-  }
-
-  function getHint(type) {
-    switch (type) {
-      case 'boolean':
-        return '(T)rue or (F)alse';
-
-      case 'node':
-        return `
-          Open the webpage in a browser,
-          inspect the requested element
-          and paste its source here.
-        `
-
-      default:
-        return 'Text input';
-
-    }
-  }
-
-  function getType() {
-    switch (type) {
-      case 'boolean':
-        return 'boolean';
-
-      default:
-        return 'string';
-    }
-  }
-
-  function modifyUserInput() {
-    switch (type) {
-      // case 'node':
-      //   return (value) => {
-      //     // Transform into Alfa domnode object
-      //     return querySelector(page.document, page.document, value);
-      //   };
-
-      default:
-        return null;
-    }
+    return `${markup}\n${description}`;
   }
 }

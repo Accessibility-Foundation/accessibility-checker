@@ -1,26 +1,16 @@
 #!/usr/bin/env node
-import command from 'commander';
+import yargs from 'yargs';
 
 import * as pkg from '../lib/util/package.js';
 import a11yCheck from '../lib/index.js';
 
-command
+const { argv } = yargs
   .version(`${pkg.name()}: version ${pkg.version()}`)
   .usage('<url1 url2 … urlN>')
-  .description(pkg.description());
+  .help(pkg.description());
 
-command.parse(process.argv);
-
-function getUrls(command) {
-  return command.args;
-}
-
-function hasUrls(command) {
-  return command.args.length > 0;
-}
-
-if (hasUrls(command)) {
-  a11yCheck(getUrls(command))
+if (argv._.length) {
+  a11yCheck(argv._)
     .then(() => {
       console.log('Done!');
     });
