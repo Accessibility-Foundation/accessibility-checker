@@ -1,9 +1,8 @@
-const { Scraper } = require('@siteimprove/alfa-scrape');
+import { Scraper } from '@siteimprove/alfa-scrape';
 
-const log = require('../util/log.js');
+import log from '../util/log.js';
 
-async function scrape(url) {
-
+export default async function scrape(url) {
   const scraper = new Scraper();
   const scrapeResult = {};
 
@@ -24,5 +23,3 @@ async function scrape(url) {
 
   return scrapeResult;
 }
-
-module.exports = scrape;

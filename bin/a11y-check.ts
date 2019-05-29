@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-const command = require('commander');
+import * as command from 'commander';
 
-const pkg = require('../lib/util/package.js');
-const a11yCheck = require('../lib/index.js');
-
+import * as pkg from '../lib/util/package.js';
+import a11yCheck from '../lib/index.js';
 
 command
   .version(`${pkg.name()}: version ${pkg.version()}`)

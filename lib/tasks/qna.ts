@@ -1,12 +1,12 @@
-const { default: chalk } = require('chalk');
-const prompt = require('prompt-async');
+import chalk from 'chalk';
+import * as prompt from 'prompt-async';
 
-exports.askQuestions = async function askQuestions(Q, page) {
+export async function askQuestions(Q, page) {
   const newQ = Array.from(Q);
   let answers = [];
   const askQuestions = {
     properties: Object.assign({}, newQ.map(q => {
-      const question = createQuestion(q, page);
+      const question = createQuestion(q);
 
       return question;
     }))
@@ -16,7 +16,7 @@ exports.askQuestions = async function askQuestions(Q, page) {
 
   answers = await prompt.get(askQuestions);
 
-  return newQ.map((q, index) => {
+  return newQ.map((q: any, index) => {
     const { rule, ...qProps } = q;
 
     return {
@@ -27,7 +27,6 @@ exports.askQuestions = async function askQuestions(Q, page) {
 }
 
 function createQuestion(question) {
-
   const {
     id,
     message,

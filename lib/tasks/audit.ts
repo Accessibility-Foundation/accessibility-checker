@@ -1,16 +1,15 @@
-const alfaAct = require('@siteimprove/alfa-act');
-const { Rules } = require('@siteimprove/alfa-wcag');
+import * as alfaAct from '@siteimprove/alfa-act';
+import { Rules } from '@siteimprove/alfa-rules';
 
-const { askQuestions } = require('./qna.js');
-const { OUTCOME } = require('../constants/');
+import { askQuestions } from './qna.js';
+import { OUTCOME } from '../constants/index.js';
 
-
-async function audit(page) {
+export default async function audit(page) {
 
   const rules = Object.values(Rules);
   const auditAnswers = [];
   let auditResult = alfaAct.audit(page, rules);
-  let cannotTellResults = auditResult.results.filter(result => result.outcome === OUTCOME.CANNOT_TELL);
+  let cannotTellResults = [...auditResult.results].filter(result => result.outcome === OUTCOME.CANNOT_TELL);
 
   while (cannotTellResults.length !== 0) {
 
@@ -27,10 +26,8 @@ async function audit(page) {
       });
 
     auditResult = await alfaAct.audit(page, rules, auditAnswers);
-    cannotTellResults = auditResult.results.filter(r => r.outcome === OUTCOME.CANNOT_TELL);
+    cannotTellResults = [...auditResult.results].filter(r => r.outcome === OUTCOME.CANNOT_TELL);
   }
 
   return auditResult;
 }
-
-module.exports = audit;

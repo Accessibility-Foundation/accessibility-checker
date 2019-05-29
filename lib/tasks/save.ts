@@ -1,11 +1,11 @@
-const {
+import {
   existsSync,
   mkdirSync,
   writeFileSync
-} = require('fs');
-const path = require('path');
+} from 'fs';
+import * as path from 'path';
 
-function saveFile(filepath, contents) {
+export default function saveFile(filepath, contents) {
   const resolvedPath = path.resolve(filepath);
 
   // Create folders if they do not exist
@@ -23,7 +23,6 @@ function saveFile(filepath, contents) {
 }
 
 function createDirs(filepath) {
-
   const folderList = filepath
     .split(path.sep)
     .filter(dir => dir !== '')
@@ -44,5 +43,3 @@ function createDirs(filepath) {
       }
     });
 }
-
-module.exports = saveFile;

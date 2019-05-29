@@ -1,14 +1,13 @@
-const { OUTCOME } = require('../constants/');
+import { OUTCOME } from '../constants/index.js';
 
-function report(audit, page) {
-
+export default function report(audit, page = {}) {
   const newReport = {
     title: 'accessibility check',
     date_created: new Date(),
     outcome: getOutcome(audit.results),
     summary: summarise(audit.results),
     results: audit.results.slice().map(formatResults),
-    page: page || {},
+    page,
   };
 
   newReport.results = orderBy('rule', newReport.results)
@@ -17,6 +16,7 @@ function report(audit, page) {
       const newResult = {
         rule: result.rule,
         outcome: getOutcome(result.results),
+        results: undefined
       };
 
       if (newResult.outcome !== OUTCOME.INAPPLICABLE) {
@@ -108,7 +108,7 @@ function sortByRule(a, b) {
 
 function summarise(results) {
   const summaryKeys = Object.values(OUTCOME);
-  const summary = {};
+  const summary = { total: 0 };
 
   summaryKeys.forEach(key => {
     summary[key] = results.filter(r => r.outcome === key).length;
@@ -118,5 +118,3 @@ function summarise(results) {
 
   return summary;
 }
-
-module.exports = report;
