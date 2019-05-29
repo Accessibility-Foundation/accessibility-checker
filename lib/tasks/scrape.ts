@@ -1,25 +1,19 @@
+import * as act from '@siteimprove/alfa-act';
 import { Scraper } from '@siteimprove/alfa-scrape';
 
 import log from '../util/log.js';
 
-export default async function scrape(url) {
+export default async function scrape(url: string): Promise<act.Aspects> {
   const scraper = new Scraper();
-  const scrapeResult = {};
 
   log(`Scrape ${url}`);
-  await scraper.scrape(url, {})
-    .then((scraped) => {
-      Object.assign(scrapeResult, scraped);
-      log(`Scrape successfull`);
-    })
 
-    .catch((error) => {
-      throw error;
-    })
-
-    .finally(() => {
-      scraper.close();
-    });
-
-  return scrapeResult;
+  try {
+    const result = await scraper.scrape(url);
+    log(`Scrape successfull`);
+    return result;
+  } catch (error) {
+  } finally {
+    scraper.close();
+  }
 }

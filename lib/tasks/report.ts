@@ -1,4 +1,4 @@
-import { OUTCOME } from '../constants/index.js';
+import * as act from '@siteimprove/alfa-act';
 
 export default function report(audit, page = {}) {
   const newReport = {
@@ -19,7 +19,7 @@ export default function report(audit, page = {}) {
         results: undefined
       };
 
-      if (newResult.outcome !== OUTCOME.INAPPLICABLE) {
+      if (newResult.outcome !== act.Outcome.Inapplicable) {
         newResult.results = result.results;
       }
 
@@ -29,20 +29,20 @@ export default function report(audit, page = {}) {
   return newReport;
 }
 
-function getOutcome(results) {
-  if (results.some(r => r.outcome === OUTCOME.FAILED)) {
-    return OUTCOME.FAILED;
+function getOutcome(results: Array<act.Result<any, any>>): act.Outcome {
+  if (results.some(r => r.outcome === act.Outcome.Failed)) {
+    return act.Outcome.Failed;
   }
 
-  else if (results.some(r => r.outcome === OUTCOME.CANNOT_TELL)) {
-    return OUTCOME.CANNOT_TELL;
+  else if (results.some(r => r.outcome === act.Outcome.CantTell)) {
+    return act.Outcome.CantTell;
   }
 
-  else if (results.some(r => r.outcome === OUTCOME.PASSED)) {
-    return OUTCOME.PASSED;
+  else if (results.some(r => r.outcome === act.Outcome.Passed)) {
+    return act.Outcome.Passed;
   }
 
-  return OUTCOME.INAPPLICABLE;
+  return act.Outcome.Inapplicable;
 }
 
 function formatResults(result) {
@@ -107,11 +107,17 @@ function sortByRule(a, b) {
 }
 
 function summarise(results) {
-  const summaryKeys = Object.values(OUTCOME);
+  const outcomes = [
+    act.Outcome.Passed,
+    act.Outcome.Failed,
+    act.Outcome.Inapplicable,
+    act.Outcome.CantTell,
+  ];
+
   const summary = { total: 0 };
 
-  summaryKeys.forEach(key => {
-    summary[key] = results.filter(r => r.outcome === key).length;
+  outcomes.forEach(outcome => {
+    summary[outcome] = results.filter(r => r.outcome === outcome).length;
   });
 
   summary.total = results.length;

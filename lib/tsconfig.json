@@ -1,7 +1,6 @@
 {
   "extends": "../tsconfig.json",
   "files": [
-    "constants/index.ts",
     "index.ts",
     "tasks/audit.ts",
     "tasks/qna.ts",
