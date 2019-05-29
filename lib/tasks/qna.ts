@@ -1,12 +1,14 @@
 import * as act from '@siteimprove/alfa-act';
 import * as dom from '@siteimprove/alfa-dom';
+import * as xpath from '@siteimprove/alfa-xpath';
 import { highlight } from '@siteimprove/alfa-highlight';
+import chalk from 'chalk';
 import * as inquirer from 'inquirer';
 
 export async function askQuestions(questions: Array<act.Question<any, any>>, page: act.Aspects): Promise<Array<act.Answer<any, any>>> {
   const answers = await inquirer.prompt(
-    questions.map(q => {
-      return createQuestion(q);
+    questions.map(question => {
+      return createQuestion(question, page.document);
     })
   );
 
@@ -40,7 +42,7 @@ export async function askQuestions(questions: Array<act.Question<any, any>>, pag
   });
 }
 
-function createQuestion(question): inquirer.Question {
+function createQuestion(question: act.Question<any, any>, document: dom.Document): inquirer.Question {
   const {
     id,
     message,
@@ -53,14 +55,39 @@ function createQuestion(question): inquirer.Question {
       return {
         name: id,
         type: 'confirm',
-        message: getMessage()
+        message: getMessage
       }
 
-    default:
+    case act.QuestionType.Node:
       return {
         name: id,
         type: 'input',
-        message: getMessage()
+        message: getMessage,
+        suffix: chalk.gray(" (XPath)"),
+        filter(expression) {
+          debugger;
+
+          if (expression === "") {
+            return false;
+          }
+
+          const targets = [
+            ...xpath.evaluate(document, document, expression)
+          ];
+
+          if (targets.length === 0) {
+            return null;
+          }
+
+          return targets[0];
+        },
+        validate(target) {
+          if (target === null) {
+            return 'XPath expression did not match any nodes';
+          }
+
+          return true;
+        },
       }
   }
 
