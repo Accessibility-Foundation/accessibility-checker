@@ -12,10 +12,10 @@ export default async function audit(page: act.Aspects) {
 
   while (cannotTellResults.length !== 0) {
 
-    await askQuestions(auditResult.questions, page)
-      .then((_answers) => {
+    await askQuestions([...auditResult.questions], page)
+      .then((answers) => {
 
-        _answers.forEach((answer) => {
+        answers.forEach((answer) => {
           auditAnswers.push(answer);
         });
       })

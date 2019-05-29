@@ -1,28 +1,33 @@
+import * as act from '@siteimprove/alfa-act';
 import chalk from 'chalk';
 import * as prompt from 'prompt-async';
 
-export async function askQuestions(Q, page) {
-  const newQ = Array.from(Q);
-  let answers = [];
-  const askQuestions = {
-    properties: Object.assign({}, newQ.map(q => {
-      const question = createQuestion(q);
-
-      return question;
-    }))
-  };
-
+export async function askQuestions(questions: Array<act.Question<any, any>>, page: act.Aspects): Promise<Array<act.Answer<any, any>>> {
   prompt.start();
 
-  answers = await prompt.get(askQuestions);
+  const answers = await prompt.get({
+    properties: questions.map(q => {
+      return createQuestion(q);
+    })
+  });
 
-  return newQ.map((q: any, index) => {
-    const { rule, ...qProps } = q;
+  return questions.map((question, index) => {
+    let answer: act.Answer<any, any>;
 
-    return {
-      ...qProps,
-      answer: answers[index],
+    if (question.scope === act.QuestionScope.Global) {
+      answer = {
+        ...question,
+        rule: undefined,
+        answer: answers[index],
+      };
+    } else {
+      answer = {
+        ...question,
+        answer: answers[index],
+      };
     }
+
+    return answer;
   });
 }
 
