@@ -2,6 +2,7 @@
 **/*.js
 **/*.d.ts
 **/*.map
+**/*.tsbuildinfo
 
 # Project files
 *_modules
