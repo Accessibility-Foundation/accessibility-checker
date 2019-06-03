@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "lib": ["es2015"],
+    "module": "commonjs",
+    "target": "es2015"
+  },
+  "files": [],
+  "references": [{ "path": "bin" }, { "path": "lib" }]
+}

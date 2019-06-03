@@ -1,3 +1,9 @@
+# Compiler output
+**/*.js
+**/*.d.ts
+**/*.map
+**/*.tsbuildinfo
+
 # Project files
 *_modules
 a11y-check

@@ -1,11 +1,11 @@
-const audit = require('./tasks/audit.js');
-const report = require('./tasks/report.js');
-const save = require('./tasks/save.js');
-const scrape = require('./tasks/scrape.js');
+import audit from './tasks/audit.js';
+import report from './tasks/report.js';
+import save from './tasks/save.js';
+import scrape from './tasks/scrape.js';
 
-const log = require('./util/log.js');
+import log from './util/log.js';
 
-async function a11yCheck(urls = []) {
+export default async function a11yCheck(urls = []) {
   const checkCount = urls.length;
   const urlList = urls.values();
   let currentUrl = urlList.next();
@@ -99,5 +99,3 @@ async function checkUrl(url) {
 
   log(`Done ${url}`);
 }
-
-module.exports = a11yCheck;

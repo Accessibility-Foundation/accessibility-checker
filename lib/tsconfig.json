@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "files": [
+    "index.ts",
+    "tasks/audit.ts",
+    "tasks/qna.ts",
+    "tasks/report.ts",
+    "tasks/save.ts",
+    "tasks/scrape.ts",
+    "util/log.ts",
+    "util/package.ts"
+  ],
+  "references": [{ "path": "../vendor/alfa/packages" }]
+}
