@@ -61,8 +61,6 @@ function formatResult(result, document) {
     target
   } = result;
 
-  console.log(rule.locales);
-
   const newResult = {
     rule: rule.id,
     outcome: outcome.toString(),
@@ -148,12 +146,13 @@ function summarise(results) {
 }
 
 function getXpath(target, context) {
+
     if (target && "nodeType" in target) {
         const node = target;
         if (dom.isElement(node)) {
             const parentNode = dom.getParentNode(node, context);
             const tagName = dom.getTagName(node, context);
-            if (parentNode !== null && parentNode.childNodes) {
+            if (parentNode !== null) {
                 const { childNodes } = parentNode;
                 for (let i = 0, j = 1, n = childNodes.length; i < n; i++) {
                     const childNode = childNodes[i];

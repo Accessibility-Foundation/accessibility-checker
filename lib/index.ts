@@ -23,11 +23,19 @@ export default async function a11yCheck(urls = []) {
 async function checkUrl(url) {
 
   log(`Check ${url}`);
-
+  let Url: URL = undefined;
   let pageResult: act.Aspects = undefined;
 
+  try {
+    Url = new URL(url);
+
+
+  } catch(error) {
+    log(error);
+    return;
+  }
   // Scrape
-  await scrape(url)
+  await scrape(Url.href)
     .catch((error) => {
       log(`Scrape Error; ${error}`);
     })
@@ -41,7 +49,7 @@ async function checkUrl(url) {
 
       pageResult = {...scraped};
 
-      log(`Audit ${url}`);
+      log(`Audit ${Url.href}`);
 
       const auditResults = await audit(scraped)
         .then((audited) => {
@@ -68,7 +76,7 @@ async function checkUrl(url) {
         return null;
       }
 
-      log(`Report ${url}`);
+      log(`Report ${Url.href}`);
 
       const reportResult = report(audited, pageResult);
       log(`Report outcome: ${reportResult.outcome}`);
@@ -92,7 +100,9 @@ async function checkUrl(url) {
       } = report;
 
       const reportStr = JSON.stringify(report, null, 4);
-      const urlFolder = url.replace(/[^a-zA-Z0-9]+/, '_');
+      const urlFolder = (Url.hostname + Url.pathname)
+        .replace(/[^a-zA-Z0-9./]+/, '_');
+
       const createdStr = created.toLocaleString('default', {
         hour12: false,
         year: 'numeric',
@@ -102,7 +112,7 @@ async function checkUrl(url) {
         minute: '2-digit',
         second: '2-digit',
       }).replace(/[^0-9]/g, '');
-      const filename = `report-${outcome}-${createdStr}.json`;
+      const filename = `report-${urlFolder.replace('/', '_')}-${outcome}-${createdStr}.json`;
       const saved = save(`./a11y-check/${urlFolder}/${filename}`, reportStr);
 
       if (saved) {
