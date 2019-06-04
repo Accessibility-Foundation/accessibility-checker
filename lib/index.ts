@@ -86,17 +86,30 @@ async function checkUrl(url) {
         log('Skip save report; there is no report');
         return null;
       }
+      const {
+        created,
+        outcome,
+      } = report;
 
       const reportStr = JSON.stringify(report, null, 4);
       const urlFolder = url.replace(/[^a-zA-Z0-9]+/, '_');
-      const saved = save(`./a11y-check/${urlFolder}/report.json`, reportStr);
+      const createdStr = created.toLocaleString('default', {
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      }).replace(/[^0-9]/g, '');
+      const filename = `report-${outcome}-${createdStr}.json`;
+      const saved = save(`./a11y-check/${urlFolder}/${filename}`, reportStr);
 
       if (saved) {
         log(`Saved report to “${saved}”`);
       } else {
         log('Save report failed');
       }
-
     })
 
     .catch((error) => {

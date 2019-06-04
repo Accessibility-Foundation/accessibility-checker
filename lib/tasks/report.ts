@@ -11,7 +11,7 @@ export default function report(audit, page: act.Aspects) {
   const newReport = {
     title: 'accessibility check report',
     url,
-    date_created: new Date(),
+    created: new Date(),
     outcome: getOutcome(audit.results),
     summary: summarise(audit.results),
     results: audit.results.slice().map(result => {
