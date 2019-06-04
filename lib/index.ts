@@ -28,7 +28,7 @@ async function checkUrl(url) {
       log(`Scrape Error; ${error}`);
     })
 
-    .then((scraped) => {
+    .then(async (scraped) => {
 
       if (!scraped) {
         log(`Skip audit nothing scraped`);
@@ -37,7 +37,7 @@ async function checkUrl(url) {
 
       log(`Audit ${url}`);
 
-      const auditResults = audit(scraped)
+      const auditResults = await audit(scraped)
         .then((audited) => {
           log(`Audit succesfull`);
 
