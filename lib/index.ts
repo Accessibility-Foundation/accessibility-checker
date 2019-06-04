@@ -1,3 +1,5 @@
+import * as act from '@siteimprove/alfa-act';
+
 import audit from './tasks/audit.js';
 import report from './tasks/report.js';
 import save from './tasks/save.js';
@@ -22,6 +24,8 @@ async function checkUrl(url) {
 
   log(`Check ${url}`);
 
+  let pageResult: act.Aspects = undefined;
+
   // Scrape
   await scrape(url)
     .catch((error) => {
@@ -34,6 +38,8 @@ async function checkUrl(url) {
         log(`Skip audit nothing scraped`);
         return null;
       }
+
+      pageResult = {...scraped};
 
       log(`Audit ${url}`);
 
@@ -64,8 +70,8 @@ async function checkUrl(url) {
 
       log(`Report ${url}`);
 
-      const reportResult = report(audited);
-      log(reportResult.outcome);
+      const reportResult = report(audited, pageResult);
+      log(`Report outcome: ${reportResult.outcome}`);
 
       return reportResult;
     })

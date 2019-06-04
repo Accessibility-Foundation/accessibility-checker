@@ -1,13 +1,22 @@
 import * as act from '@siteimprove/alfa-act';
+import * as dom from '@siteimprove/alfa-dom';
 
-export default function report(audit, page = {}) {
+export default function report(audit, page: act.Aspects) {
+
+  const {
+    request: { url },
+    document
+  } = page;
+
   const newReport = {
-    title: 'accessibility check',
+    title: 'accessibility check report',
+    url,
     date_created: new Date(),
     outcome: getOutcome(audit.results),
     summary: summarise(audit.results),
-    results: audit.results.slice().map(formatResults),
-    page,
+    results: audit.results.slice().map(result => {
+      return formatResult(result, document);
+    })
   };
 
   newReport.results = orderBy('rule', newReport.results)
@@ -45,11 +54,24 @@ function getOutcome(results: Array<act.Result<any, any>>): act.Outcome {
   return act.Outcome.Inapplicable;
 }
 
-function formatResults(result) {
+function formatResult(result, document) {
+  const {
+    outcome,
+    rule,
+    target
+  } = result;
+
+  console.log(rule.locales);
+
   const newResult = {
-    rule: result.rule.id,
-    outcome: result.outcome,
-    target: result.target,
+    rule: rule.id,
+    outcome: outcome.toString(),
+    target: {
+      xpath: getXpath(target, document),
+      markup: target
+        ? dom.serialize(target, target)
+        : undefined,
+    },
   };
 
   return newResult;
@@ -123,4 +145,45 @@ function summarise(results) {
   summary.total = results.length;
 
   return summary;
+}
+
+function getXpath(target, context) {
+    if (target && "nodeType" in target) {
+        const node = target;
+        if (dom.isElement(node)) {
+            const parentNode = dom.getParentNode(node, context);
+            const tagName = dom.getTagName(node, context);
+            if (parentNode !== null && parentNode.childNodes) {
+                const { childNodes } = parentNode;
+                for (let i = 0, j = 1, n = childNodes.length; i < n; i++) {
+                    const childNode = childNodes[i];
+                    if (childNode === node) {
+                        return `${getXpath(parentNode, context)}/${tagName}[${j}]`;
+                    }
+                    if (dom.isElement(childNode) &&
+                        dom.getTagName(childNode, context) === tagName) {
+                        j++;
+                    }
+                }
+            }
+        }
+        if (dom.isDocument(node)) {
+            return "/";
+        }
+    }
+    else if (target) {
+        const attribute = target;
+        const owner = dom.getOwnerElement(attribute, context);
+        if (owner !== null) {
+            let qualifiedName;
+            if (attribute.prefix === null) {
+                qualifiedName = attribute.localName;
+            }
+            else {
+                qualifiedName = `${attribute.prefix}:${attribute.localName}`;
+            }
+            return `${getXpath(owner, context)}/@${qualifiedName}`;
+        }
+    }
+    return "";
 }
