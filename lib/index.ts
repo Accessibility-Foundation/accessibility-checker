@@ -7,7 +7,7 @@ import scrape from './tasks/scrape.js';
 
 import log from './util/log.js';
 
-export default async function a11yCheck(urls = []) {
+export default async function a11yCheck(urls = [], rules = []) {
   const checkCount = urls.length;
   const urlList = urls.values();
   let currentUrl = urlList.next();
@@ -15,12 +15,12 @@ export default async function a11yCheck(urls = []) {
   log(`Checking ${checkCount} url${checkCount === 1 ? '' : 's'}`);
 
   while (!currentUrl.done) {
-    await checkUrl(currentUrl.value);
+    await checkUrl(currentUrl.value, rules);
     currentUrl = urlList.next();
   }
 }
 
-async function checkUrl(url) {
+async function checkUrl(url, rules) {
 
   log(`Check ${url}`);
   let Url: URL = undefined;
@@ -51,7 +51,7 @@ async function checkUrl(url) {
 
       log(`Audit ${Url.href}`);
 
-      const auditResults = await audit(scraped)
+      const auditResults = await audit(scraped, rules)
         .then((audited) => {
           log(`Audit succesfull`);
 

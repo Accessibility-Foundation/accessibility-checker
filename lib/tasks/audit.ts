@@ -1,11 +1,9 @@
 import * as act from '@siteimprove/alfa-act';
-import { Rules } from '@siteimprove/alfa-rules';
 
 import { askQuestions } from './qna.js';
 
-export default async function audit(page: act.Aspects) {
+export default async function audit(page: act.Aspects, rules) {
 
-  const rules = Object.values(Rules);
   const auditAnswers = [];
   let auditResult = act.audit(page, rules);
   let cannotTellResults = [...auditResult.results].filter(result => result.outcome === act.Outcome.CantTell);
