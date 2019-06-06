@@ -25,11 +25,13 @@ export default function report(audit, page: act.Aspects) {
       const newResult = {
         rule: result.rule,
         outcome: getOutcome(result.results),
+        summary: undefined,
         results: undefined
       };
 
       if (newResult.outcome !== act.Outcome.Inapplicable) {
-        newResult.results = result.results;
+        newResult.summary = summarise(result.results);
+        newResult.results = orderBy('outcome', result.results);
       }
 
       return newResult;
