@@ -7,7 +7,8 @@ import scrape from './tasks/scrape.js';
 
 import log from './util/log.js';
 
-export default async function a11yCheck(urls = [], rules = []) {
+export default async function a11yCheck(urls = [], options = {}) {
+
   const checkCount = urls.length;
   const urlList = urls.values();
   let currentUrl = urlList.next();
@@ -15,16 +16,21 @@ export default async function a11yCheck(urls = [], rules = []) {
   log(`Checking ${checkCount} url${checkCount === 1 ? '' : 's'}`);
 
   while (!currentUrl.done) {
-    await checkUrl(currentUrl.value, rules);
+    await checkUrl(currentUrl.value, options);
     currentUrl = urlList.next();
   }
 }
 
-async function checkUrl(url, rules) {
+async function checkUrl(url, options) {
 
-  log(`Check ${url}`);
+  const {
+    rules,
+    saveTo
+  } = options;
   let Url: URL = undefined;
   let pageResult: act.Aspects = undefined;
+
+  log(`Check ${url}`);
 
   try {
     Url = new URL(url);
@@ -113,7 +119,7 @@ async function checkUrl(url, rules) {
         second: '2-digit',
       }).replace(/[^0-9]/g, '');
       const filename = `report-${urlFolder.replace('/', '_')}-${outcome}-${createdStr}.json`;
-      const saved = save(`./a11y-check/${urlFolder}/${filename}`, reportStr);
+      const saved = save(`${saveTo}/${urlFolder}/${filename}`, reportStr);
 
       if (saved) {
         log(`Saved report to “${saved}”`);

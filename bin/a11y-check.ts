@@ -2,7 +2,7 @@
 import yargs from 'yargs';
 
 import * as pkg from '../lib/util/package.js';
-import a11yCheck from '../lib/index.js';
+import a11yCheck from '../lib/';
 import RULES from '../lib/constants/';
 
 const { argv } = yargs
@@ -13,10 +13,20 @@ const { argv } = yargs
     describe: 'Test for specific rules only',
     type: 'array',
   })
+  .option('save-to', {
+    alias: 's',
+    default: './a11y-check',
+    describe: 'Save the report to a specified folder',
+    type: 'string',
+    normalize: true,
+  })
   .help();
 
 if (argv._.length) {
-  a11yCheck(argv._, getRules(argv))
+  a11yCheck(argv._, {
+    rules: getRules(argv),
+    saveTo: argv.saveTo,
+  })
     .then(() => {
       console.log('Done!');
     });
