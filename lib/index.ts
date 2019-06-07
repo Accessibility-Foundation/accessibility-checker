@@ -107,7 +107,8 @@ async function checkUrl(url, options) {
 
       const reportStr = JSON.stringify(report, null, 4);
       const urlFolder = (Url.hostname + Url.pathname)
-        .replace(/[^a-zA-Z0-9./]+/, '_');
+        .replace(/[^a-zA-Z0-9./#?]+/, '_')
+        .replace(/\/$/g, '');
 
       const createdStr = created.toLocaleString('default', {
         hour12: false,
@@ -118,7 +119,7 @@ async function checkUrl(url, options) {
         minute: '2-digit',
         second: '2-digit',
       }).replace(/[^0-9]/g, '');
-      const filename = `report-${urlFolder.replace('/', '_')}-${outcome}-${createdStr}.json`;
+      const filename = `report-${urlFolder.replace(/[/_]+/g, '_')}-${outcome}-${createdStr}.json`;
       const saved = save(`${saveTo}/${urlFolder}/${filename}`, reportStr);
 
       if (saved) {
