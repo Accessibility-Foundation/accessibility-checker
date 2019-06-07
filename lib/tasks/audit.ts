@@ -26,5 +26,5 @@ export default async function audit(page: act.Aspects, rules) {
     cannotTellResults = [...auditResult.results].filter(r => r.outcome === act.Outcome.CantTell);
   }
 
-  return auditResult;
+  return Object.assign({answers: auditAnswers.slice()}, auditResult);
 }
