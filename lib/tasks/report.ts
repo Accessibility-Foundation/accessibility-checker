@@ -8,14 +8,21 @@ export default function report(audit, page: act.Aspects) {
     document
   } = page;
 
+  const {
+    answers,
+    results,
+  } = audit;
+
   const newReport = {
     title: 'accessibility check report',
     url,
     created: new Date(),
-    outcome: getOutcome(audit.results),
-    summary: summarise(audit.results),
-    results: audit.results.slice().map(result => {
-      return formatResult(result, document);
+    outcome: getOutcome(results),
+    summary: summarise(results),
+    results: results.map(result => {
+      const resultWithAnswers = addAnswersToResult(answers, result);
+
+      return formatResult(resultWithAnswers, document);
     })
   };
 
@@ -60,7 +67,8 @@ function formatResult(result, document) {
   const {
     outcome,
     rule,
-    target
+    target,
+    answers
   } = result;
 
   const newResult = {
@@ -71,10 +79,41 @@ function formatResult(result, document) {
       markup: target
         ? dom.serialize(target, target)
         : undefined,
+      answers,
     },
   };
 
   return newResult;
+}
+
+function addAnswersToResult(answers, result) {
+
+  const answersForResult = answers.filter(answer => {
+
+    if (!answer.rule) {
+      return answer.target === result.target;
+    }
+
+    return (
+      answer.target === result.target
+      && answer.rule === result.rule
+    );
+  }).map(answer => {
+    return {
+      id: answer.target.localName
+        ? `${answer.target.localName}:${answer.id}`
+        : answer.id,
+      title: answer.message || undefined,
+      answer: answer.answer,
+    };
+  });
+
+  return {
+    ...result,
+    answers: answersForResult.length
+      ? answersForResult
+      :undefined,
+  };
 }
 
 function orderBy(key, results) {
